@@ -25,6 +25,16 @@ app.get("/api/flashcards", (req, res) => {
       id: 2,
       question: "What is CSS?",
       answer: "Styling language"
+    },
+    {
+      id: 3,
+      question: "What is JavaScript?",
+      answer: "Programming language"
+    },
+    {
+      id: 4,
+      question: "What is React?",
+      answer: "JavaScript library"
     }
   ]);
 });
