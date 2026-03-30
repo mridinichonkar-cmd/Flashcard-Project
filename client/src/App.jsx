@@ -64,6 +64,24 @@ const handleFormSubmit = async (e) => {
   }
 };
 
+
+const handleDelete = async (id) => {
+  try{
+    const response = await fetch(`http://localhost:5000/api/flashcards/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok){
+      throw new Error("Failed to delete flashcard");
+    }
+
+    setFlashcards((prevFlashcards) => prevFlashcards.filter((card) => card.id !== id));
+      
+  } catch (error) {
+    console.error("Error deleting flashcard:", error);
+  }
+};
+
   return (
     <div className = "app">
       <header className="app-header">
@@ -97,6 +115,15 @@ const handleFormSubmit = async (e) => {
         >
         <h2>{card.question}</h2>
         {flippedCards.includes(card.id) && <p>{card.answer}</p>}
+
+        <button type="button" 
+        onClick={(e) => {
+          e.stopPropagation();
+          handleDelete(card.id);
+          console.log("Deleting card:", id);
+        }} >Delete
+        </button>
+
         </div>
       ))}
       </div>

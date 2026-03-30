@@ -19,6 +19,10 @@ app.post("/api/flashcards", (req, res) => {
   res.status(201).json(newFlashcard);
 });
 
+app.delete("/api/flashcards/:id", (req, res) => {
+  res.json({ message: "Flashcard deleted successfully" });
+});
+
 app.listen(5000,()=> (
     console.log("Server is running on port 5000")
 ))
