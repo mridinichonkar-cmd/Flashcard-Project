@@ -5,6 +5,9 @@ function App() {
   
   const [flashcards, setFlashcards] = useState([]);
   const [flippedCards, setFlippedCards] = useState([]);
+
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
   
   useEffect(() => {
     fetch("http://localhost:5000/api/flashcards")
@@ -26,16 +29,51 @@ function App() {
      }
 };
 
+const handleFormSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!question.trim() || !answer.trim()) {
+    alert("Please fill in both the question and answer fields.");
+    return;
+  }
+
+  const newFlashcard = {
+    question: question.trim(),
+    answer: answer.trim(),
+  };
+
+    try {
+    const response = await fetch("http://localhost:5000/api/flashcards", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newFlashcard),
+    });
+
+    const data = await response.json();
+    setFlashcards([...flashcards, data]);
+    setQuestion("");
+    setAnswer("");
+
+
+    
+  } catch (error) {
+    console.error("Error creating flashcard:", error);
+  }
+};
+
   return (
     <div className = "app">
       <header className="app-header">
         <h1>Flashcard App</h1>
       </header>
-
-    <section className="form-section">
-      <h2>Add a Flashcard</h2>
-      <form>
-        <input type="text" placeholder="Question" />
+      
+      <section className="form-section">
+      <form className="flashcard-form" onSubmit={handleFormSubmit}>
+        <input type="text" placeholder="Question" value={question} onChange={(e) => setQuestion(e.target.value)} />
+        <input type="text" placeholder="Answer" value={answer} onChange={(e) => setAnswer(e.target.value)} />
+        <button type="submit">Add Flashcard</button>
       </form>
     </section>
 
