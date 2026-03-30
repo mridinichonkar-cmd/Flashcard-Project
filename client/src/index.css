@@ -95,11 +95,26 @@ body{
   flex-direction: column;
   justify-content: space-between;
 
-  min-height: 150px;
+  min-height: 200px;
+  max-width: 300px;
   background-color: rgba(216, 73, 226, 0.237);
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 15px;
   box-shadow: 0 10px 14px rgba(0, 0, 0, 0.08);
   cursor: pointer;
+}
+
+.deletebtn{
+  background-color: rgba(142, 137, 137, 0.765);
+  color: white;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 40%;
+  align-self: flex-end;
+}
+
+.deletebtn:hover{
+  background-color: rgba(255, 0, 0, 0.965);
 }

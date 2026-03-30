@@ -116,12 +116,21 @@ const handleDelete = async (id) => {
         <h2>{card.question}</h2>
         {flippedCards.includes(card.id) && <p>{card.answer}</p>}
 
-        <button type="button" 
+        <button className= "deletebtn" type="button" 
         onClick={(e) => {
           e.stopPropagation();
           handleDelete(card.id);
           console.log("Deleting card:", id);
-        }} >Delete
+        }} >
+          <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="20"
+          viewBox="0 0 24 24"
+          width="20"
+          fill="currentColor"
+          >
+          <path d="M3 6h18v2H3zm2 3h14l-1 12H6L5 9zm3-5h8l1 2H7l1-2z"/>  
+          </svg>
         </button>
 
         </div>
