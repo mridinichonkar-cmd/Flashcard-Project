@@ -23,6 +23,15 @@ app.delete("/api/flashcards/:id", (req, res) => {
   res.json({ message: "Flashcard deleted successfully" });
 });
 
+app.put("/api/flashcards/:id", (req, res) => {
+  const updatedFlashcard = {
+    id: Number(req.params.id),
+    question: req.body.question,
+    answer: req.body.answer
+  };
+  res.json(updatedFlashcard);
+});
+
 app.listen(5000,()=> (
     console.log("Server is running on port 5000")
 ))

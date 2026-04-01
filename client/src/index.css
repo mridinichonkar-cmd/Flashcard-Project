@@ -105,6 +105,14 @@ body{
   cursor: pointer;
 }
 
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: auto;
+}
+
 .deletebtn{
   background-color: rgba(142, 137, 137, 0.765);
   color: white;
@@ -115,6 +123,22 @@ body{
   align-self: flex-end;
 }
 
+
 .deletebtn:hover{
   background-color: rgba(255, 0, 0, 0.965);
+}
+
+.editbtn{
+  background-color: rgba(142, 137, 137, 0.765);
+  color: white;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 40%;
+  align-self: flex-end;
+}
+
+.editbtn:hover{
+  background-color: rgba(0, 255, 0, 0.55);
+  
 }

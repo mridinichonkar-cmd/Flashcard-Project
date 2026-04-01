@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import "./index.css";
+import { FaTrash, FaEdit } from "react-icons/fa";
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -9,6 +11,8 @@ function App() {
 
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [editId, setEditId]= useState(null);
+
   
   useEffect(() => {
     fetch("http://localhost:5000/api/flashcards")
@@ -43,25 +47,47 @@ const handleFormSubmit = async (e) => {
     answer: answer.trim(),
   };
 
-    try {
-    const response = await fetch("http://localhost:5000/api/flashcards", {
-      method: "POST",
+  if(editId){
+
+    try{
+    const response = await fetch(`http://localhost:5000/api/flashcards/${editId}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newFlashcard),
     });
 
-    const data = await response.json();
-    setFlashcards([...flashcards, data]);
-    setQuestion("");
-    setAnswer("");
+      const data = await response.json();
+      setFlashcards((prevFlashcards) => prevFlashcards.map((card) => (card.id === editId ? data : card)));
+      setQuestion("");
+      setAnswer("");
+      setEditId(null);
 
-
-    
   } catch (error) {
-    console.error("Error creating flashcard:", error);
+    console.error("Error updating flashcard:", error);
   }
+    
+  }else{
+    try {
+      const response = await fetch("http://localhost:5000/api/flashcards", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newFlashcard),
+      });
+
+      const data = await response.json();
+      setFlashcards((prevFlashcards) => [...prevFlashcards, data]);
+      setQuestion("");
+      setAnswer("");
+    
+    } catch (error) {
+        console.error("Error creating flashcard:", error);
+    }
+  }
+
 };
 
 
@@ -82,6 +108,12 @@ const handleDelete = async (id) => {
   }
 };
 
+const handleEdit = (card) =>{
+  setQuestion(card.question);
+  setAnswer(card.answer);
+  setEditId(card.id);
+}
+
   return (
     <div className = "app">
       <header className="app-header">
@@ -94,7 +126,7 @@ const handleDelete = async (id) => {
       <form className="flashcard-form" onSubmit={handleFormSubmit}>
         <input type="text" placeholder="Question" value={question} onChange={(e) => setQuestion(e.target.value)} />
         <input type="text" placeholder="Answer" value={answer} onChange={(e) => setAnswer(e.target.value)} />
-        <button type="submit">Add Flashcard</button>
+        <button type="submit">{editId ? "Update Flashcard" : "Add Flashcard"}</button>
       </form>
     </section>
 
@@ -115,24 +147,28 @@ const handleDelete = async (id) => {
         >
         <h2>{card.question}</h2>
         {flippedCards.includes(card.id) && <p>{card.answer}</p>}
+        
+        <div className="button-container">
+        
+        <button title= "Edit" className="editbtn" type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleEdit(card);
+        }}
+          >
+          <FaEdit />
+          </button>
+        
 
-        <button className= "deletebtn" type="button" 
+        <button title= "Delete" className= "deletebtn" type="button" 
         onClick={(e) => {
           e.stopPropagation();
           handleDelete(card.id);
           console.log("Deleting card:", id);
         }} >
-          <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="20"
-          viewBox="0 0 24 24"
-          width="20"
-          fill="currentColor"
-          >
-          <path d="M3 6h18v2H3zm2 3h14l-1 12H6L5 9zm3-5h8l1 2H7l1-2z"/>  
-          </svg>
+          <FaTrash />
         </button>
-
+      </div>
         </div>
       ))}
       </div>
