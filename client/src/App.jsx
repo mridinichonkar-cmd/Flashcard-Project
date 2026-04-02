@@ -145,9 +145,11 @@ const handleEdit = (card) =>{
           margin: "10px",
           cursor: "pointer",}}
         >
+        <div className="flashcard-content">
         <h2>{card.question}</h2>
         {flippedCards.includes(card.id) && <p>{card.answer}</p>}
-        
+        </div>
+
         <div className="button-container">
         
         <button title= "Edit" className="editbtn" type="button"
