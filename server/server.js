@@ -2,62 +2,106 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.send("Running server!");
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
+
+const flashcardSchema = new mongoose.Schema({
+  question: {
+    type: String,
+    required: true,
+  },
+  answer: {
+    type: String,
+    required: true,
+  },
 });
 
-app.post("/api/flashcards", (req, res) => {
-  const newFlashcard = {
-    id: Date.now(),
-    question: req.body.question,
-    answer: req.body.answer
-  };
-  res.status(201).json(newFlashcard);
+const Flashcard = mongoose.model("Flashcard", flashcardSchema);
+
+app.get("/api/flashcards", async(req, res) => {
+    try {
+    const flashcards = await Flashcard.find();
+    res.json(flashcards);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch flashcards" });
+  }
 });
 
-app.delete("/api/flashcards/:id", (req, res) => {
-  res.json({ message: "Flashcard deleted successfully" });
+app.post("/api/flashcards", async(req, res) => {
+  try{
+    const {question, answer} = req.body;
+    const newFlashcard = new Flashcard({question, answer});
+    const savedFlashcard = await newFlashcard.save();
+
+    res.status(201).json(savedFlashcard);
+  }catch (error){
+    res.status(500).json({ error: "Failed to create flashcard"});
+
+  }
 });
 
-app.put("/api/flashcards/:id", (req, res) => {
-  const updatedFlashcard = {
-    id: Number(req.params.id),
-    question: req.body.question,
-    answer: req.body.answer
-  };
-  res.json(updatedFlashcard);
+app.delete("/api/flashcards/:id", async (req, res) => {
+  try{
+    await Flashcard.findByIdAndDelete(req.params.id);
+    res.json({message: "Flashcard deleted"});
+  }catch (error){
+    res.status(500).json({error:"Failed to delete flashcard"});
+  }
 });
 
-app.listen(5000,()=> (
-    console.log("Server is running on port 5000")
+
+app.put("/api/flashcards/:id", async (req, res) => {
+  try{
+    const {question, answer} = req.body;
+    const updatedFlashcard = await Flashcard.findByIdAndUpdate(
+      req.params.id,
+      {question, answer},
+      {new: true}
+    );
+    res.json(updatedFlashcard);
+  } catch (error){
+    res.status(500).json({error: "Failed to update flashcard"});
+  }
+  });
+  
+const PORT = process.env.PORT || 5000;
+app.listen(PORT,()=> (
+    console.log(`Server is running on port ${PORT}`)
 ))
 
-app.get("/api/flashcards", (req, res) => {
-  res.json([
-    {
-      id: 1,
-      question: "What is HTML?",
-      answer: "Markup language"
-    },
-    {
-      id: 2,
-      question: "What is CSS?",
-      answer: "Styling language"
-    },
-    {
-      id: 3,
-      question: "What is JavaScript?",
-      answer: "Programming language"
-    },
-    {
-      id: 4,
-      question: "What is React?",
-      answer: "JavaScript library"
-    }
+
+
+// app.get("/api/flashcards", (req, res) => {
+//   res.json([
+//     {
+//       id: 1,
+//       question: "What is HTML?",
+//       answer: "Markup language"
+//     },
+//     {
+//       id: 2,
+//       question: "What is CSS?",
+//       answer: "Styling language"
+//     },
+//     {
+//       id: 3,
+//       question: "What is JavaScript?",
+//       answer: "Programming language"
+//     },
+//     {
+//       id: 4,
+//       question: "What is React?",
+//       answer: "JavaScript library"
+//     }
     
-  ]);
-});
+//   ]);
+// });

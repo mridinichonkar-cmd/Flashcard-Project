@@ -4,7 +4,6 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 
 
 function App() {
-  const [count, setCount] = useState(0)
   
   const [flashcards, setFlashcards] = useState([]);
   const [flippedCards, setFlippedCards] = useState([]);
@@ -17,8 +16,7 @@ function App() {
   useEffect(() => {
     fetch("http://localhost:5000/api/flashcards")
     .then((response) => response.json())
-    .then ((data) => {
-      setFlashcards(data);
+    .then ((data) => {setFlashcards(data);
     })
     .catch((error) => {
       console.error("Error fetching flashcards:", error);
@@ -58,8 +56,8 @@ const handleFormSubmit = async (e) => {
       body: JSON.stringify(newFlashcard),
     });
 
-      const data = await response.json();
-      setFlashcards((prevFlashcards) => prevFlashcards.map((card) => (card.id === editId ? data : card)));
+      const savedUpdatedCard = await response.json();
+      setFlashcards((prevFlashcards) => prevFlashcards.map((card) => (card._id === editId ? savedUpdatedCard : card)));
       setQuestion("");
       setAnswer("");
       setEditId(null);
@@ -78,8 +76,8 @@ const handleFormSubmit = async (e) => {
         body: JSON.stringify(newFlashcard),
       });
 
-      const data = await response.json();
-      setFlashcards((prevFlashcards) => [...prevFlashcards, data]);
+      const savedCard = await response.json();
+      setFlashcards((prevFlashcards) => [...prevFlashcards, savedCard]);
       setQuestion("");
       setAnswer("");
     
@@ -101,7 +99,7 @@ const handleDelete = async (id) => {
       throw new Error("Failed to delete flashcard");
     }
 
-    setFlashcards((prevFlashcards) => prevFlashcards.filter((card) => card.id !== id));
+    setFlashcards((prevFlashcards) => prevFlashcards.filter((card) => card._id !== id));
       
   } catch (error) {
     console.error("Error deleting flashcard:", error);
@@ -111,13 +109,21 @@ const handleDelete = async (id) => {
 const handleEdit = (card) =>{
   setQuestion(card.question);
   setAnswer(card.answer);
-  setEditId(card.id);
+  setEditId(card._id);
 }
 
   return (
     <div className = "app">
       <header className="app-header">
         <h1>Flashcard App</h1>
+
+        <nav className="navbar">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+          
+        </nav>
       </header>
     
     <section className="form-section">
@@ -140,12 +146,12 @@ const handleEdit = (card) =>{
       {flashcards.map((card)=> (
         <div 
         className="flashcard"
-        key={card.id}
-        onClick={() => handleCardFlip(card.id)}
+        key={card._id}
+        onClick={() => handleCardFlip(card._id)}
         >
         
         <div
-        className={`flashcard-inside ${flippedCards.includes(card.id) ? "flipped" : ""}`}
+        className={`flashcard-inside ${flippedCards.includes(card._id) ? "flipped" : ""}`}
         > 
 
         <div className="flashcard-front">
@@ -169,8 +175,8 @@ const handleEdit = (card) =>{
         <button title= "Delete" className= "deletebtn" type="button" 
         onClick={(e) => {
           e.stopPropagation();
-          handleDelete(card.id);
-          console.log("Deleting card:", card.id);
+          handleDelete(card._id);
+          console.log("Deleting card:", card._id);
         }} >
           <FaTrash />
         </button>
@@ -190,6 +196,11 @@ const handleEdit = (card) =>{
   
   </div>
   </section>
+  
+  <footer className="app-footer">
+  <p>© 2026 Flashcard App</p>
+</footer>
+
 </div>
   
   );
