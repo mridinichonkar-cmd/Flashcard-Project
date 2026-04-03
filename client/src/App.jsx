@@ -124,8 +124,8 @@ const handleEdit = (card) =>{
       <h2>Create a Flashcard</h2>
 
       <form className="flashcard-form" onSubmit={handleFormSubmit}>
-        <input type="text" placeholder="Question" value={question} onChange={(e) => setQuestion(e.target.value)} />
-        <input type="text" placeholder="Answer" value={answer} onChange={(e) => setAnswer(e.target.value)} />
+        <input id="question" type="text" placeholder="Question" value={question} onChange={(e) => setQuestion(e.target.value)} />
+        <input id="answer" type="text" placeholder="Answer" value={answer} onChange={(e) => setAnswer(e.target.value)} />
         <button type="submit">{editId ? "Update Flashcard" : "Add Flashcard"}</button>
       </form>
     </section>
@@ -133,22 +133,26 @@ const handleEdit = (card) =>{
 
     <section className="flashcard-section">
       <h2>My Flashcards</h2>
-      <div className="flashcard-container">
+      
+      <div className="flashcard-grid">
+      
+      
       {flashcards.map((card)=> (
         <div 
         className="flashcard"
         key={card.id}
         onClick={() => handleCardFlip(card.id)}
-        style={{
-          border: "1px solid black",
-          padding: "20px",
-          margin: "10px",
-          cursor: "pointer",}}
         >
+        
+        <div
+        className={`flashcard-inside ${flippedCards.includes(card.id) ? "flipped" : ""}`}
+        > 
+
+        <div className="flashcard-front">
         <div className="flashcard-content">
         <h2>{card.question}</h2>
-        {flippedCards.includes(card.id) && <p>{card.answer}</p>}
         </div>
+       
 
         <div className="button-container">
         
@@ -166,16 +170,27 @@ const handleEdit = (card) =>{
         onClick={(e) => {
           e.stopPropagation();
           handleDelete(card.id);
-          console.log("Deleting card:", id);
+          console.log("Deleting card:", card.id);
         }} >
           <FaTrash />
         </button>
       </div>
-        </div>
-      ))}
       </div>
-    </section>
+
+      <div className="flashcard-back">
+        <div className="flashcard-content">
+  
+          <h3>{card.answer}</h3>
+        </div>
+      </div>
+
     </div>
+  </div>
+))}
+  
+  </div>
+  </section>
+</div>
   
   );
 }
