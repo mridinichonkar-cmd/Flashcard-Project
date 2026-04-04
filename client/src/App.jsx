@@ -12,7 +12,10 @@ function App() {
   const [answer, setAnswer] = useState("");
   const [editId, setEditId]= useState(null);
 
-  
+  const [hiddenCards, setHiddenCards] = useState([]);
+  const [fadingCards, setFadingCards] = useState([]);
+
+
   useEffect(() => {
     fetch("http://localhost:5000/api/flashcards")
     .then((response) => response.json())
@@ -24,13 +27,26 @@ function App() {
 
   }, []);
    
-  const handleCardFlip = (id) => {
-    if (!flippedCards.includes(id)) {
-      setFlippedCards([...flippedCards, id]);
-     } else{
-      setFlippedCards(flippedCards.filter((cardId) => cardId !== id));
-     }
+
+
+const handleCardFlip = (id) => {
+  if (!flippedCards.includes(id)) {
+    setFlippedCards((prev) => [...prev, id]);
+  } else {
+    setFlippedCards((prev) => prev.filter((cardId) => cardId !== id));
+    
+    setTimeout(() => {
+      setFadingCards((prev) => [...prev, id]);
+       setTimeout(() => {
+      setHiddenCards((prev) => [...prev, id]);
+      setFadingCards((prev) => prev.filter((cardId) => cardId !== id));
+    }, 400); 
+    }, 700)
+    
+  }
 };
+
+
 
 const handleFormSubmit = async (e) => {
   e.preventDefault();
@@ -138,14 +154,25 @@ const handleEdit = (card) =>{
 
 
     <section className="flashcard-section">
+
+      <div className="flashcard-header">
       <h2>My Flashcards</h2>
-      
+      <button className="ResetBtn" onClick={() => {
+      setHiddenCards([]);
+      setFlippedCards([]);
+      setFadingCards([]);
+      }}> Reset Flashcards
+      </button>
+      </div>
+
+
       <div className="flashcard-grid">
-      
-      
-      {flashcards.map((card)=> (
+    
+      {flashcards
+      .filter((card) => !hiddenCards.includes(card._id))
+      .map((card)=> (
         <div 
-        className="flashcard"
+        className={`flashcard ${fadingCards.includes(card._id) ? "fade-out" : ""}`}
         key={card._id}
         onClick={() => handleCardFlip(card._id)}
         >
@@ -163,7 +190,7 @@ const handleEdit = (card) =>{
         <div className="button-container">
         
         <button title= "Edit" className="editbtn" type="button"
-        onClick={(e) => {
+          onClick={(e) => {
           e.stopPropagation();
           handleEdit(card);
         }}

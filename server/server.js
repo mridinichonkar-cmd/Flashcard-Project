@@ -77,31 +77,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT,()=> (
     console.log(`Server is running on port ${PORT}`)
 ))
-
-
-
-// app.get("/api/flashcards", (req, res) => {
-//   res.json([
-//     {
-//       id: 1,
-//       question: "What is HTML?",
-//       answer: "Markup language"
-//     },
-//     {
-//       id: 2,
-//       question: "What is CSS?",
-//       answer: "Styling language"
-//     },
-//     {
-//       id: 3,
-//       question: "What is JavaScript?",
-//       answer: "Programming language"
-//     },
-//     {
-//       id: 4,
-//       question: "What is React?",
-//       answer: "JavaScript library"
-//     }
-    
-//   ]);
-// });

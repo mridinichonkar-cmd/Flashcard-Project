@@ -5,7 +5,7 @@
 
 body{
   font-family: Arial, sans-serif;
-  background-color: white;
+  background-color: rgb(207, 230, 244);
   color:rgb(3, 18, 18);
 }
 
@@ -19,12 +19,13 @@ body{
   display: flex;
   justify-content: space-between; /* pushes title left, nav right */
   align-items: center;           /* vertically aligns them */
-  background-color: rgba(216, 73, 226, 0.578);
+  background-color: rgba(73, 129, 226, 0.578);
   padding: 20px 40px;
 }
 .app-header h1{
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  color: rgba(106, 14, 212, 0.82);
+  color: rgba(97, 19, 215, 0.82);
+  text-shadow: 0px 3px rgba(17, 5, 80, 0.249);
 }
 
 .navbar{
@@ -36,7 +37,8 @@ body{
 
 .navbar a {
   display: block;
-  color: rgb(110, 11, 97);
+  color: rgb(248, 248, 248);
+  text-shadow: 0px 3px rgba(0, 0, 0, 0.139) ;
   text-align: center;
   padding: 14px 20px;
   text-decoration: none; /* Removes underline */
@@ -44,7 +46,7 @@ body{
 
 .app-footer {
   margin-top: auto;
-  background-color: rgba(216, 73, 226, 0.578);
+  background-color: rgba(73, 129, 226, 0.578);
   padding: 30px;
   color: white;
   text-align: center;
@@ -52,11 +54,11 @@ body{
 }
 
 .form-section{
-  background: white;
+  background: rgb(255, 255, 255);
   padding: 24px;
   border-radius: 16px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 14px rgba(125, 126, 236, 0.637);
   margin: 60px 60px;
 }
 .form-section h2{
@@ -100,11 +102,32 @@ body{
   background-color: rgba(150, 50, 157, 0.965);
 }
 
-
-.flashcard-section h2{
+.flashcard-header {
+  position: relative;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
   margin-bottom: 20px;
-  color: rgb(14, 1, 15);
-  text-align: center;
+}
+
+
+
+.ResetBtn{
+  position: absolute;
+  right: 0; 
+  margin-right: 180px;
+  
+  background-color: #db43a8c5;
+  color: black;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ResetBtn:hover{
+   background-color: #de1b9d;
 }
 
 .flashcard-grid{
@@ -123,6 +146,7 @@ body{
 }
 
 .flashcard:hover{
+
   transform: translateY(-5px);
   transition: transform 0.2s ease;
 }
@@ -152,14 +176,13 @@ body{
   inset: 0;
   width: 100%;
   height: 100%;
-  border: 1px solid black;
+  border: none;
   border-radius: 12px;
   padding: 20px;
   box-sizing: border-box;
-
+   
   
-  
-  background-color: rgba(216, 73, 226, 0.237);
+  background-color: rgba(241, 239, 232, 0.925);
   box-shadow: 0 10px 14px rgba(0, 0, 0, 0.08);
   cursor: pointer;
 
@@ -183,6 +206,7 @@ body{
   justify-content: center;
   overflow-wrap: break-word;
   word-break: break-word;
+  color: rgb(101, 101, 101);
 } 
 
 
@@ -190,6 +214,20 @@ body{
   overflow-y: scroll;
 }
 
+.fade-out {
+  animation: fadeOut 0.7s ease forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
 
 
 .button-container {
