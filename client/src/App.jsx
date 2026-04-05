@@ -6,16 +6,23 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 function App() {
   
   const [flashcards, setFlashcards] = useState([]);
+
+  //tracing flipped flashcards
   const [flippedCards, setFlippedCards] = useState([]);
 
+  //input form
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+
+  //storing card being edited
   const [editId, setEditId]= useState(null);
 
+  //hidden cards and fading state
   const [hiddenCards, setHiddenCards] = useState([]);
   const [fadingCards, setFadingCards] = useState([]);
 
 
+  //fetching flashcards after loading
   useEffect(() => {
     fetch("http://localhost:5000/api/flashcards")
     .then((response) => response.json())
@@ -28,13 +35,14 @@ function App() {
   }, []);
    
 
-
+//flipping cards
 const handleCardFlip = (id) => {
   if (!flippedCards.includes(id)) {
-    setFlippedCards((prev) => [...prev, id]);
+    setFlippedCards((prev) => [...prev, id]); //first click to show answer
   } else {
-    setFlippedCards((prev) => prev.filter((cardId) => cardId !== id));
-    
+    //second click to flip to question
+    setFlippedCards((prev) => prev.filter((cardId) => cardId !== id)); 
+    //after flip start fade
     setTimeout(() => {
       setFadingCards((prev) => [...prev, id]);
        setTimeout(() => {
@@ -47,7 +55,7 @@ const handleCardFlip = (id) => {
 };
 
 
-
+//handles creating and update
 const handleFormSubmit = async (e) => {
   e.preventDefault();
 
@@ -60,7 +68,7 @@ const handleFormSubmit = async (e) => {
     question: question.trim(),
     answer: answer.trim(),
   };
-
+  //if editing then update card
   if(editId){
 
     try{
@@ -73,6 +81,7 @@ const handleFormSubmit = async (e) => {
     });
 
       const savedUpdatedCard = await response.json();
+      //replace updated card in state
       setFlashcards((prevFlashcards) => prevFlashcards.map((card) => (card._id === editId ? savedUpdatedCard : card)));
       setQuestion("");
       setAnswer("");
@@ -82,7 +91,7 @@ const handleFormSubmit = async (e) => {
     console.error("Error updating flashcard:", error);
   }
     
-  }else{
+  }else{ 
     try {
       const response = await fetch("http://localhost:5000/api/flashcards", {
         method: "POST",
@@ -104,7 +113,7 @@ const handleFormSubmit = async (e) => {
 
 };
 
-
+//delete flashcard from database
 const handleDelete = async (id) => {
   try{
     const response = await fetch(`http://localhost:5000/api/flashcards/${id}`, {
@@ -130,6 +139,7 @@ const handleEdit = (card) =>{
 
   return (
     <div className = "app">
+      {/* //header section */}
       <header className="app-header">
         <h1>Flashcard App</h1>
 
@@ -142,6 +152,7 @@ const handleEdit = (card) =>{
         </nav>
       </header>
     
+  {/* //form section for card creation */}
     <section className="form-section">
       <h2>Create a Flashcard</h2>
 
