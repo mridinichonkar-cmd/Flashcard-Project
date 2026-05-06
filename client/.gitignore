@@ -1,3 +1,9 @@
+
+server/.env
+.env
+**/.env
+node_modules/
+
 # Logs
 logs
 *.log
