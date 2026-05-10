@@ -29,17 +29,93 @@ function App() {
 
 
   //fetching flashcards after loading
-  useEffect(() => {
-    fetch("http://localhost:5000/api/flashcards")
-    .then((response) => response.json())
-    .then ((data) => {setFlashcards(data);
+useEffect(() => {
+  fetch("http://localhost:5000/api/flashcards", {
+    credentials: "include",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return [];
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      setFlashcards(Array.isArray(data) ? data : []);
     })
     .catch((error) => {
       console.error("Error fetching flashcards:", error);
+      setFlashcards([]);
     });
-
-  }, []);
+}, []);
    
+const handleRegister = async (e) => {
+  e.preventDefault();
+
+  try{
+    const response = await fetch(
+      "http://localhost:5000/api/auth/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setUser(data.user);
+      alert("Registered successfully");
+    } else {
+      alert(data.message);
+      }
+    } catch(error){
+        console.error(error);
+  }
+};
+
+const handleLogin = async (e) => {
+  e.preventDefault();
+
+  try{
+    const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials:"include",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if(response.ok){
+      setUser(data.user);
+      alert(data.message);
+    } else{
+        alert(data.message);
+      }
+  } catch(error){
+    console.error(error);
+  }
+};
+
+
+
+
+
 
 //flipping cards
 const handleCardFlip = (id) => {
@@ -84,6 +160,7 @@ const handleFormSubmit = async (e) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials:"include",
       body: JSON.stringify(newFlashcard),
     });
 
@@ -105,6 +182,7 @@ const handleFormSubmit = async (e) => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials:"include",
         body: JSON.stringify(newFlashcard),
       });
 
@@ -125,6 +203,7 @@ const handleDelete = async (id) => {
   try{
     const response = await fetch(`http://localhost:5000/api/flashcards/${id}`, {
       method: "DELETE",
+      credentials:"include",
     });
 
     if (!response.ok){
@@ -144,6 +223,8 @@ const handleEdit = (card) =>{
   setEditId(card._id);
 }
 
+console.log(flashcards);
+
   return (
     <div className = "app">
       {/* //header section */}
@@ -154,10 +235,40 @@ const handleEdit = (card) =>{
         <a href="#home">Home</a>
         <a href="#services">Services</a>
         <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <a href="#contact">Login</a>
           
         </nav>
       </header>
+
+
+    <form onSubmit={handleRegister}>
+  <input
+    type="text"
+    placeholder="Username"
+    value={username}
+    onChange={(e) => setUsername(e.target.value)}
+  />
+
+  <input
+    type="email"
+    placeholder="Email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+  />
+
+  <input
+    type="password"
+    placeholder="Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+  />
+
+  <button type="submit">Register</button>
+</form>
+
+<button onClick={handleLogin}>
+  Login
+</button>
     
   {/* //form section for card creation */}
     <section className="form-section">

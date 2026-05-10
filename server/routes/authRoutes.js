@@ -11,7 +11,7 @@ const createToken = (userId) => {
   }); 
 };
 
-//registering
+// registering
 
 router.post("/register", async (req,res) => {
     try{
@@ -22,10 +22,8 @@ router.post("/register", async (req,res) => {
             return res.status(400).json({message: "Email already registered"});
         }
         
-        const hashedPassword = await bycrypt.hash(password,10);
+        const hashedPassword = await bcrypt.hash(password,10);
     
-
-        const User = await bcrypt.hash(password,10);
         const user = await User.create({
             username,
             email,
@@ -50,6 +48,8 @@ router.post("/register", async (req,res) => {
         });
 
     } catch(error){
+        console.error("registration error:");
+
         res.status(500).json({ message: "Registration failed", error: error.message }); 
     }
 
