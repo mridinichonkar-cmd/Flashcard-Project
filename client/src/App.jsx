@@ -21,6 +21,12 @@ function App() {
   const [hiddenCards, setHiddenCards] = useState([]);
   const [fadingCards, setFadingCards] = useState([]);
 
+  const [user, setUser] = useState(null);
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
 
   //fetching flashcards after loading
   useEffect(() => {
