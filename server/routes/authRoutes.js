@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -91,6 +92,10 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Login failed", error: error.message });
   }
+});
+
+router.get("/me", authMiddleware, (req, res) => {
+  res.json({ user: req.user });
 });
 
 // Logout
