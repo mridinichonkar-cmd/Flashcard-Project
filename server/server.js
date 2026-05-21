@@ -6,6 +6,8 @@ const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
+const historyRoutes = require("./routes/historyRoutes");
+
 dotenv.config();
 
 app.use(cookieParser());
@@ -20,6 +22,8 @@ app.use(cors({
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/history", historyRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
