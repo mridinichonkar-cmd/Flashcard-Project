@@ -27,6 +27,8 @@ function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [isOpen,setIsOpen] = useState(false);
+
 
   //fetching flashcards after loading
 useEffect(() => {
@@ -74,6 +76,7 @@ const handleRegister = async (e) => {
     if (response.ok) {
       setUser(data.user);
       alert("Registered successfully");
+      window.location.reload();
     } else {
       alert(data.message);
       }
@@ -104,6 +107,8 @@ const handleLogin = async (e) => {
     if(response.ok){
       setUser(data.user);
       alert(data.message);
+      window.location.reload();
+
     } else{
         alert(data.message);
       }
@@ -113,7 +118,25 @@ const handleLogin = async (e) => {
 };
 
 
+const handleLogout = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/auth/logout",
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
 
+    if (response.ok) {
+      setUser(null);
+      window.location.reload();
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 
 
@@ -235,40 +258,44 @@ console.log(flashcards);
         <a href="#home">Home</a>
         <a href="#services">Services</a>
         <a href="#about">About</a>
-        <a href="#contact">Login</a>
-          
+        <button onClick={handleLogout}>
+        Logout
+        </button>
         </nav>
       </header>
 
+  
+      <form onSubmit={handleRegister}>
+    <input
+      type="text"
+      placeholder="Username"
+      value={username}
+      onChange={(e) => setUsername(e.target.value)}
+    />
 
-    <form onSubmit={handleRegister}>
-  <input
-    type="text"
-    placeholder="Username"
-    value={username}
-    onChange={(e) => setUsername(e.target.value)}
-  />
+    <input
+      type="email"
+      placeholder="Email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+    />
 
-  <input
-    type="email"
-    placeholder="Email"
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-  />
+    <input
+      type="password"
+      placeholder="Password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    />
 
-  <input
-    type="password"
-    placeholder="Password"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-  />
+    <button type="submit">Register</button>
+  </form>
 
-  <button type="submit">Register</button>
-</form>
-
-<button onClick={handleLogin}>
+  <button onClick={handleLogin}>
   Login
-</button>
+  </button> 
+
+  
+
     
   {/* //form section for card creation */}
     <section className="form-section">

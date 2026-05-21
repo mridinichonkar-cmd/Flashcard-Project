@@ -5,7 +5,7 @@
 
 body{
   font-family: Arial, sans-serif;
-  background-color: rgb(207, 230, 244);
+  background-color: rgb(255, 255, 255);
   color:rgb(3, 18, 18);
 }
 
@@ -20,7 +20,7 @@ body{
   justify-content: space-between; /* pushes title left, nav right */
   align-items: center;           /* vertically aligns them */
   background-color: rgba(73, 129, 226, 0.578);
-  padding: 20px 40px;
+  padding: 10px 40px;
 }
 .app-header h1{
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -115,7 +115,7 @@ body{
 .ResetBtn{
   position: absolute;
   right: 0; 
-  margin-right: 180px;
+  margin-right: 100px;
   
   background-color: #db43a8c5;
   color: black;
