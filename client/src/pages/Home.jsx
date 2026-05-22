@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import "../index.css";
 import { Link } from "react-router-dom";
 import { Button, Input, AutoComplete, Tag} from "antd";
-import { EditOutlined , DeleteOutlined, UserOutlined} from "@ant-design/icons";
+import { EditOutlined , DeleteOutlined, UserOutlined, ReloadOutlined} from "@ant-design/icons";
 import { Avatar, Space } from 'antd';
+import { FaBolt } from 'react-icons/fa';
 
 
 
@@ -213,8 +214,10 @@ function Home(){
 
     <div className = "app">
       <header className="app-header">
-        
+        <div className="logo">
+        <FaBolt color="orange" size="2em" />
         <h1>Flash Learning</h1>
+        </div>
 
     <nav className="navbar">
     {!user ? (
@@ -236,7 +239,31 @@ function Home(){
 </nav>
     </header>
 
-    
+{/* stats section */}
+      <div className="stats-grid">
+    <div className="stat-card">
+      <p className="stat-card__label">Total cards</p>
+      <p className="stat-card__value">{flashcards.length}</p>
+    </div>
+    <div className="stat-card">
+      <p className="stat-card__label">Decks</p>
+      <p className="stat-card__value">
+        {new Set(flashcards.map(c => c.deck || "General")).size}
+      </p>
+    </div>
+    <div className="stat-card">
+      <p className="stat-card__label">Studied</p>
+      <p className="stat-card__value">
+        {hiddenCards.length}
+      </p>
+    </div>
+    <div className="stat-card">
+      <p className="stat-card__label">Remaining</p>
+      <p className="stat-card__value">
+        {flashcards.length - hiddenCards.length}
+      </p>
+    </div>
+  </div>
   {/* //form section for card creation */}
     <section className="form-section">
       <h2>Create a Flashcard</h2>
@@ -276,6 +303,7 @@ function Home(){
           }
           style={{ width: "100%" }}
           />
+          
         </div>
         <Button htmlType="submit" className="btn-primary">{editId ? "Update Flashcard" : " + Add Flashcard"}</Button>
       </form>
@@ -286,12 +314,12 @@ function Home(){
 
       <div className="flashcard-header">
       <h2>My Flashcards</h2>
-      <button className="ResetBtn" onClick={() => {
+      <Button className="ResetBtn" onClick={() => {
       setHiddenCards([]);
       setFlippedCards([]);
       setFadingCards([]);
-      }}> Reset Flashcards
-      </button>
+      }}> Reset <ReloadOutlined />
+      </Button>
       </div>
 
 

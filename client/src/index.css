@@ -33,12 +33,18 @@ body{
   display: flex;
   justify-content: space-between; /* pushes title left, nav right */
   align-items: center;           /* vertically aligns them */
-  background-color: var(--navy-600);
+  background-color: var(--navy-800);
   padding: 10px 50px;
 }
 .app-header h1{
   font-family: Arial, sans-serif;
   color: white;
+  font-size: 26px;
+}
+.app-header .logo{
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 
@@ -60,11 +66,43 @@ body{
 
 .app-footer {
   margin-top: auto;
-  background-color: rgba(73, 129, 226, 0.578);
+  background-color: var(--navy-800);
   padding: 30px;
   color: white;
   text-align: center;
   padding: 15px;
+}
+
+.stats-grid {
+  display: flex;
+  gap: 12px;
+  padding: 1.5rem 1.25rem;
+  margin: 1.5rem 60px;
+  align-self: center;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  border: 0.5px solid var(--navy-100);
+  box-shadow: 0 10px 10px rgba(4, 44, 83, 0.08);
+  min-width: 150px;
+  
+}
+
+.stat-card__label {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--orange-600);
+  margin-bottom: 4px;
+}
+
+.stat-card__value {
+  font-size: 33px;
+  font-weight: 500;
+  color: var(--navy-900);
+  
 }
 
 .form-section{
@@ -131,14 +169,24 @@ body{
   cursor: pointer;
 }
 
+.form-select{
+  padding: 5px 12px;
+  border: 0.5px solid var(--navy-100);
+  size: 15px;
+  border-radius: 8px;
+  background: var(--page-bg);
+  font-size: 15px; 
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  
+}
 .flashcard-form button:hover{
   background-color: var(--orange-600);
 }
 
 .flashcard-header {
-  position: relative;
   display: flex;
-  justify-content: center; 
+  justify-content: start; 
   align-items: center;
   margin: 0 60px 20px;
 }
@@ -146,6 +194,7 @@ body{
 .flashcard-header h2 {
   color: var(--navy-600);
   font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .ResetBtn{
@@ -163,7 +212,7 @@ body{
 }
 
 .ResetBtn:hover{
-   background-color: var(--orange-600);
+  background-color: var(--orange-600);
 }
 
 .flashcard-grid{
