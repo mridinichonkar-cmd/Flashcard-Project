@@ -39,6 +39,11 @@ const flashcardSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  deck:{
+    type: String,
+    default: "General",
+  },
+
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -61,8 +66,8 @@ app.get("/api/flashcards", authMiddleware, async(req, res) => {
 
 app.post("/api/flashcards", authMiddleware, async(req, res) => {
   try{
-    const {question, answer} = req.body;
-    const newFlashcard = new Flashcard({question, answer,user:req.userId});
+    const {question, answer, deck} = req.body;
+    const newFlashcard = new Flashcard({question, answer, deck, user:req.userId});
     const savedFlashcard = await newFlashcard.save();
 
     res.status(201).json(savedFlashcard);
@@ -93,14 +98,14 @@ app.delete("/api/flashcards/:id", authMiddleware, async (req, res) => {
 
 app.put("/api/flashcards/:id", authMiddleware, async (req, res) => {
   try {
-    const { question, answer } = req.body;
+    const { question, answer, deck } = req.body;
 
     const updatedFlashcard = await Flashcard.findOneAndUpdate(
       {
         _id: req.params.id,
         user: req.userId,
       },
-      { question, answer },
+      { question, answer, deck },
       { new: true }
     );
 

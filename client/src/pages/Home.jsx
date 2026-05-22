@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 import "../index.css";
-import { FaTrash, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { Button, Input, AutoComplete, Tag} from "antd";
+import { EditOutlined , DeleteOutlined, UserOutlined} from "@ant-design/icons";
+import { Avatar, Space } from 'antd';
+
 
 
 function Home(){
@@ -14,6 +17,7 @@ function Home(){
       //input form
       const [question, setQuestion] = useState("");
       const [answer, setAnswer] = useState("");
+      const [deck, setDeck] = useState("");
     
       //storing card being edited
       const [editId, setEditId]= useState(null);
@@ -24,11 +28,13 @@ function Home(){
     
       const [user, setUser] = useState(null);
     
-      const [username, setUsername] = useState("");
-      const [email, setEmail] = useState("");
-      const [password, setPassword] = useState("");
-    
-      const [isOpen,setIsOpen] = useState(false);
+
+      const deckOptions = [
+        { value: "General" },
+        { value: "Biology" },
+        { value: "History" },
+        { value: "Maths" },
+      ];
     
     useEffect(() => {
         fetch("http://localhost:5000/api/auth/me", {
@@ -124,6 +130,7 @@ function Home(){
       const newFlashcard = {
         question: question.trim(),
         answer: answer.trim(),
+        deck: deck.trim(),
       };
       //if editing then update card
       if(editId){
@@ -143,6 +150,7 @@ function Home(){
           setFlashcards((prevFlashcards) => prevFlashcards.map((card) => (card._id === editId ? savedUpdatedCard : card)));
           setQuestion("");
           setAnswer("");
+          setDeck("General");
           setEditId(null);
     
       } catch (error) {
@@ -164,7 +172,7 @@ function Home(){
           setFlashcards((prevFlashcards) => [...prevFlashcards, savedCard]);
           setQuestion("");
           setAnswer("");
-        
+          setDeck("General");
         } catch (error) {
             console.error("Error creating flashcard:", error);
         }
@@ -194,6 +202,7 @@ function Home(){
     const handleEdit = (card) =>{
       setQuestion(card.question);
       setAnswer(card.answer);
+      setDeck(card.deck || "General");
       setEditId(card._id);
     }
     
@@ -203,9 +212,9 @@ function Home(){
     return (
 
     <div className = "app">
-      {/* //header section */}
       <header className="app-header">
-        <h1>Flashcard App</h1>
+        
+        <h1>Flash Learning</h1>
 
     <nav className="navbar">
     {!user ? (
@@ -218,8 +227,10 @@ function Home(){
     {user.role === "admin" && (
     <Link to="/admin-history">Admin History</Link>
     )}
-
-    <button onClick={handleLogout}>Logout</button>
+    <Space size="large">   
+    <Avatar class="navbar-avatar" style={{ backgroundColor: '#EF9F27', color: '#fff'}} icon={<UserOutlined />} />
+    </Space>
+    <Button type="primary" onClick={handleLogout}>Logout</Button>
     </>
     )}
 </nav>
@@ -231,9 +242,42 @@ function Home(){
       <h2>Create a Flashcard</h2>
 
       <form className="flashcard-form" onSubmit={handleFormSubmit}>
-        <input id="question" type="text" placeholder="Question" value={question} onChange={(e) => setQuestion(e.target.value)} />
-        <input id="answer" type="text" placeholder="Answer" value={answer} onChange={(e) => setAnswer(e.target.value)} />
-        <button type="submit">{editId ? "Update Flashcard" : "Add Flashcard"}</button>
+        <div className="form-field">
+        <label htmlFor="question" className="form-label">Question</label>
+        <Input
+          id="question"
+          type="text"
+          placeholder="What is photosynthesis?"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+        />
+        </div>
+          <div className="form-field">
+          <label htmlFor="answer" className="form-label">Answer</label>
+        <Input
+          id="answer"
+          type="text"
+          placeholder="Enter the answer here"
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+        />
+        </div>
+        <div className="form-field">
+          <label htmlFor="deck" className="form-label">Deck</label>
+        <AutoComplete
+          id="deck"
+          className="form-select"
+          placeholder="Select or type a deck"
+          value={deck}
+          options={deckOptions}
+          onChange={(value) => setDeck(value)}
+          filterOption={(input, option) =>
+            option?.value?.toLowerCase().includes(input.toLowerCase())
+          }
+          style={{ width: "100%" }}
+          />
+        </div>
+        <Button htmlType="submit" className="btn-primary">{editId ? "Update Flashcard" : " + Add Flashcard"}</Button>
       </form>
     </section>
 
@@ -267,6 +311,7 @@ function Home(){
         > 
 
         <div className="flashcard-front">
+          <Tag className="deck-label">{card.deck || "General"}</Tag>
         <div className="flashcard-content">
         <h2>{card.question}</h2>
         </div>
@@ -274,24 +319,24 @@ function Home(){
 
         <div className="button-container">
         
-        <button title= "Edit" className="editbtn" type="button"
+        <Button shape="circle" title= "Edit" className="editbtn" type="button"
           onClick={(e) => {
           e.stopPropagation();
           handleEdit(card);
         }}
           >
-          <FaEdit />
-          </button>
+          <EditOutlined />
+          </Button>
         
 
-        <button title= "Delete" className= "deletebtn" type="button" 
+        <Button title= "Delete" shape='circle' className= "deletebtn" type="button" 
         onClick={(e) => {
           e.stopPropagation();
           handleDelete(card._id);
           console.log("Deleting card:", card._id);
         }} >
-          <FaTrash />
-        </button>
+          <DeleteOutlined />
+        </Button>
       </div>
       </div>
 

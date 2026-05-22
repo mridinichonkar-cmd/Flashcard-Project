@@ -3,10 +3,24 @@
   margin: 0;
 }
 
+:root {
+  --navy-50:     #E6F1FB;
+  --navy-100:    #B5D4F4;
+  --navy-400:    #378ADD;
+  --navy-600:    #185FA5;
+  --navy-800:    #0C447C;
+  --navy-900:    #042C53;
+  --orange-400:  #EF9F27;
+  --orange-600:  #BA7517;
+  --orange-900:  #412402;
+  --page-bg:     #EBF2FB;
+  --purple-400: #a02669;
+}
+
 body{
   font-family: Arial, sans-serif;
-  background-color: rgb(255, 255, 255);
-  color:rgb(3, 18, 18);
+  background-color: var(--page-bg);
+ 
 }
 
 .app{
@@ -19,25 +33,25 @@ body{
   display: flex;
   justify-content: space-between; /* pushes title left, nav right */
   align-items: center;           /* vertically aligns them */
-  background-color: rgba(73, 129, 226, 0.578);
-  padding: 10px 40px;
+  background-color: var(--navy-600);
+  padding: 10px 50px;
 }
 .app-header h1{
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  color: rgba(97, 19, 215, 0.82);
-  text-shadow: 0px 3px rgba(17, 5, 80, 0.249);
+  font-family: Arial, sans-serif;
+  color: white;
 }
+
 
 .navbar{
   display: flex;
   gap: 20px;
   margin: 0;
-  padding: 0;
+  padding: 10px 0;
 }
 
 .navbar a {
   display: block;
-  color: rgb(248, 248, 248);
+  color: #fdfdfd;
   text-shadow: 0px 3px rgba(0, 0, 0, 0.139) ;
   text-align: center;
   padding: 14px 20px;
@@ -54,52 +68,71 @@ body{
 }
 
 .form-section{
-  background: rgb(255, 255, 255);
-  padding: 24px;
-  border-radius: 16px;
-  margin-bottom: 24px;
-  box-shadow: 0 4px 14px rgba(125, 126, 236, 0.637);
-  margin: 60px 60px;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 0.5px solid var(--navy-100);
+  box-shadow: 0 1px 4px rgba(4, 44, 83, 0.08);
+  margin: 1.5rem 60px;
+  align-self: center;
+  width: 50%;
 }
 .form-section h2{
-  text-align: center;  
-  margin-bottom: 20px;
-  color: rgb(14, 1, 15);
+  
+  margin-bottom: 1.5rem;
+  color: var(--navy-600);
 }
 
 .flashcard-form{
   display: flex;
+  gap: 10px;
   flex-direction: column;
-  gap: 12px;
-  align-items: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.form-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--navy-400);
 }
 
 .flashcard-form input{
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  background-color: rgba(216, 73, 226, 0.237);
-  font-size: 16px;
-  width: 60%;
+  padding: 10px 12px;
+  border: 0.5px solid var(--navy-100);
+  border-radius: 8px;
+  background: var(--page-bg);
+  font-size: 18px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 .flashcard-form input:focus{
   outline: none;
-  border-color: rgba(216, 73, 226, 0.578);
-  background-color: rgba(216, 73, 226, 0.578);
+  border-color: var(--navy-400);
+  background-color: var(--page-bg);
 }
 
 .flashcard-form button{
   padding: 12px;
+  
   border: none;
   border-radius: 20px;
-  background-color: rgba(150, 50, 157, 0.765);
+  background-color: var(--orange-400);
   color: white;
   font-size: 16px;
   cursor: pointer;
 }
 
 .flashcard-form button:hover{
-  background-color: rgba(150, 50, 157, 0.965);
+  background-color: var(--orange-600);
 }
 
 .flashcard-header {
@@ -107,48 +140,61 @@ body{
   display: flex;
   justify-content: center; 
   align-items: center;
-  margin-bottom: 20px;
+  margin: 0 60px 20px;
 }
 
-
+.flashcard-header h2 {
+  color: var(--navy-600);
+  font-size: 24px;
+}
 
 .ResetBtn{
   position: absolute;
   right: 0; 
   margin-right: 100px;
   
-  background-color: #db43a8c5;
-  color: black;
+  background-color: var(--orange-400);
+  color: #fff;
   border: none;
-  padding: 10px 16px;
+  padding: 9px 16px;
   border-radius: 999px;
   cursor: pointer;
   font-weight: 600;
 }
 
 .ResetBtn:hover{
-   background-color: #de1b9d;
+   background-color: var(--orange-600);
 }
 
 .flashcard-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 260px));
-  gap: 24px;
-  justify-content: center;
-  padding-bottom: 50px;
+  grid-template-columns: repeat(auto-fill, 260px);
+  gap: 20px;
+  justify-content: start;
+  padding: 0 60px 50px;
 }
 
 .flashcard {
   width: 260px;
-  height: 320px;
+  height: 280px;
   perspective: 1000px;
   cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.flashcard .deck-label{
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--navy-600);
+  background: var(--navy-100);
+  padding: 3px 10px;
+  border-radius: 999px;
+  align-self: flex-start;
+  margin-bottom: 4px;
 }
 
 .flashcard:hover{
-
   transform: translateY(-5px);
-  transition: transform 0.2s ease;
 }
 
 .flashcard:hover .flashcard-inner:not(.flipped){
@@ -162,13 +208,12 @@ body{
   height: 100%;
   transition: transform 0.4s ease;
   transform-style: preserve-3d;
-  
-  
 }
 
 .flashcard-inside.flipped {
   transform: rotateY(180deg);
 }
+
 
 .flashcard-front,
 .flashcard-back {
@@ -176,16 +221,14 @@ body{
   inset: 0;
   width: 100%;
   height: 100%;
-  border: none;
+  border: 0.5px solid var(--navy-100);
   border-radius: 12px;
   padding: 20px;
   box-sizing: border-box;
-   
   
-  background-color: rgb(249, 249, 190);
-  box-shadow: 0 10px 14px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(4, 44, 83, 0.08);
   cursor: pointer;
-
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 
@@ -196,6 +239,9 @@ body{
 
 .flashcard-back {
   transform: rotateY(180deg);
+  background: var(--navy-800);
+  border-color: var(--navy-600);
+  overflow-y: auto;
 }
 
 .flashcard-content{
@@ -206,12 +252,16 @@ body{
   justify-content: center;
   overflow-wrap: break-word;
   word-break: break-word;
-  color: rgb(101, 101, 101);
+  color: var(--navy-900);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
 } 
 
 
-.flashcard-back{
+.flashcard-back .flashcard-content{
   overflow-y: scroll;
+  color: #ffffff;
 }
 
 .fade-out {
@@ -239,7 +289,7 @@ body{
 }
 
 .deletebtn{
-  background-color: rgba(142, 137, 137, 0.765);
+  background-color: var(--orange-400);
   color: white;
   width: 30px;
   height: 30px;
@@ -251,11 +301,11 @@ body{
 
 
 .deletebtn:hover{
-  background-color: rgba(255, 0, 0, 0.965);
+  background-color: var(--orange-600);
 }
 
 .editbtn{
-  background-color: rgba(142, 137, 137, 0.765);
+  background-color: var(--navy-400);
   color: white;
   width: 30px;
   height: 30px;
@@ -266,6 +316,6 @@ body{
 }
 
 .editbtn:hover{
-  background-color: rgba(0, 255, 0, 0.55);
+  background-color: var(--navy-600);
   
 }
