@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react'
 import "../index.css";
 import { Link } from "react-router-dom";
 
+import { Button, Input, Form } from "antd";
+import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
+import { FaBolt } from "react-icons/fa";
+
 function Login() {
-    const [user, setUser] = useState(null);   
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  
+    const [loginLoading, setLoginLoading] = useState(false);
+    const [registerLoading, setRegisterLoading] = useState(false);
     
-    
-    
-    const handleRegister = async (e) => {
-      e.preventDefault();
-    
+    const handleRegister = async ({username, email, password}) => {
+      setRegisterLoading(true);
       try{
         const response = await fetch(
           "http://localhost:5000/api/auth/register",
@@ -25,27 +25,28 @@ function Login() {
             body: JSON.stringify({
               username,
               email,
-              password,
-            }),
-          }
-        );
+              password }),
+          });
+
     
         const data = await response.json();
     
         if (response.ok) {
-          setUser(data.user);
-          alert("Registered successfully");
-          window.location.reload();
+          // setUser(data.user);
+          alert("Registered successfully, you can now log in!");
+          
         } else {
           alert(data.message);
           }
         } catch(error){
             console.error(error);
+      } finally {
+        setRegisterLoading(false);
       }
     };
     
-    const handleLogin = async (e) => {
-      e.preventDefault();
+    const handleLogin = async ({email, password}) => {
+      setLoginLoading(true);
     
       try{
         const response = await fetch("http://localhost:5000/api/auth/login", {
@@ -64,21 +65,23 @@ function Login() {
         const data = await response.json();
     
         if(response.ok){
-          setUser(data.user);
-          alert(data.message);
-          window.location.reload();
-    
+
+          setLoginLoading(false);
+          window.location.href = "/";
+
         } else{
             alert(data.message);
           }
       } catch(error){
         console.error(error);
+      } finally{
+         setLoginLoading(false);
       }
     };
       
     return (
 
-<div className="login-container">
+<div className="auth-page">
     <header className="app-header">
         <h1>Flashcard App</h1>
         <nav className="navbar">
@@ -86,44 +89,91 @@ function Login() {
         </nav>
     </header>
     
-    
-    <h1>Login Page</h1>
+    <div className="auth-forms-row">
 
-     <form onSubmit={handleRegister}>     
-            <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            />
+        {/* Login card */}
+        <div className="auth-card">
+          <div className="auth-header">
+            <div className="auth-icon">
+              <FaBolt style={{ color: "var(--orange-400)", fontSize: 22 }} />
+              <i className="ti ti-cards" style={{ color: "var(--orange-400)", fontSize: 22 }} />
+            </div>
+            <h2>Welcome back</h2>
+            <p>Log in to your account</p>
+          </div>
 
-            <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            />
+          <Form layout="vertical" onFinish={handleLogin} className="auth-form">
+            <Form.Item label="Email" name="email"
+              rules={[
+                { required: true, message: "Please enter your email" },
+                { type: "email", message: "Enter a valid email" }
+              ]}>
+              <Input prefix={<MailOutlined />} placeholder="you@example.com" size="large" />
+            </Form.Item>
 
-            <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            />
+            <Form.Item label="Password" name="password"
+              rules={[{ required: true, message: "Please enter your password" }]}>
+              <Input.Password prefix={<LockOutlined />} placeholder="••••••••" size="large" />
+            </Form.Item>
 
-        <button type="submit">Register</button>
-        </form>
+            <Button htmlType="submit" loading={loginLoading} className="auth-btn" block>
+              Log in
+            </Button>
+          </Form>
+        </div>
 
-        <button onClick={handleLogin}>
-            Login
-        </button> 
+        {/* Divider */}
+        <div className="auth-divider">
+          <span>or</span>
+        </div>
+
+        {/* Register card */}
+        <div className="auth-card">
+          <div className="auth-header">
+            <div className="auth-icon">
+              <FaBolt style={{ color: "var(--orange-400)", fontSize: 22 }} />
+              <i className="ti ti-user-plus" style={{ color: "var(--orange-400)", fontSize: 22 }} />
+            </div>
+            <h2>Create an account</h2>
+            <p>Start learning with flashcards</p>
+          </div>
+
+          <Form layout="vertical" onFinish={handleRegister} className="auth-form">
+            <Form.Item label="Username" name="username"
+              rules={[{ required: true, message: "Please enter a username" }]}>
+              <Input prefix={<UserOutlined />} placeholder="johndoe" size="large" />
+            </Form.Item>
+
+            <Form.Item label="Email" name="email"
+              rules={[
+                { required: true, message: "Please enter your email" },
+                { type: "email", message: "Enter a valid email" }
+              ]}>
+              <Input prefix={<MailOutlined />} placeholder="you@example.com" size="large" />
+            </Form.Item>
+
+            <Form.Item label="Password" name="password"
+              rules={[
+                { required: true, message: "Please enter a password" },
+                { min: 6, message: "Password must be at least 6 characters" }
+              ]}>
+              <Input.Password prefix={<LockOutlined />} placeholder="••••••••" size="large" />
+            </Form.Item>
+
+            <Button htmlType="submit" loading={registerLoading} className="auth-btn" block>
+              Create account
+            </Button>
+          </Form>
+        </div>
+
+      </div>  {/* ← closes auth-forms-row */}
+
 
     <footer className="app-footer">
-  <p>© 2026 Flashcard App</p>
-</footer>
+        <p>© 2026 Flashcard App</p>
+    </footer>
 
 </div>
-    
     );
 }
 

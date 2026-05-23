@@ -73,36 +73,189 @@ body{
   padding: 15px;
 }
 
+/* ── Auth page ── */
+.auth-page {
+  min-height: 100vh;
+  background: var(--page-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-forms-row {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 0.5px solid var(--navy-100);
+  box-shadow: 0 1px 4px rgba(4, 44, 83, 0.08);
+  padding: 2rem;
+  width: 100%;
+  max-width: 340px;
+}
+
+.auth-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem;
+  color: var(--navy-400);
+  font-size: 13px;
+  min-height: 200px;
+}
+
+.auth-divider span {
+  background: var(--page-bg);
+  padding: 6px;
+  border-radius: 50%;
+  border: 0.5px solid var(--navy-100);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--navy-800);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.auth-header h2 {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--navy-900);
+  margin-bottom: 4px;
+}
+
+.auth-header p {
+  font-size: 13px;
+  color: var(--navy-400);
+}
+
+/* Ant Design overrides */
+.auth-form .ant-form-item-label > label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--navy-400);
+}
+
+.auth-form .ant-input-affix-wrapper,
+.auth-form .ant-input {
+  border-color: var(--navy-100) !important;
+  background: var(--page-bg) !important;
+  border-radius: 8px !important;
+}
+
+.auth-form .ant-input-affix-wrapper:focus-within {
+  border-color: var(--navy-400) !important;
+  box-shadow: 0 0 0 3px rgba(55, 138, 221, 0.15) !important;
+}
+
+.auth-btn {
+  background: var(--orange-400) !important;
+  color: var(--orange-900) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  height: 40px !important;
+  margin-top: 4px;
+}
+
+.auth-btn:hover {
+  background: var(--orange-600) !important;
+  color: #fff !important;
+}
+
 .stats-grid {
   display: flex;
-  gap: 12px;
-  padding: 1.5rem 1.25rem;
-  margin: 1.5rem 60px;
-  align-self: center;
+  gap: 24px;
+  margin: 2rem 60px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .stat-card {
   background: #fff;
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
-  border: 0.5px solid var(--navy-100);
-  box-shadow: 0 10px 10px rgba(4, 44, 83, 0.08);
-  min-width: 150px;
-  
+  border-radius: 22px;
+  padding: 1.5rem 1.7rem;
+  border: 1px solid #e4efff;
+  box-shadow: 0 10px 5px rgba(15, 23, 42, 0.08);
+
+  flex: 1 1 200px;        /* ← grows/shrinks, min 200px before wrapping */
+  max-width: 300px;       /* ← stops cards getting too wide on large screens */
+  height: 110px;
+
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.stat-icon-box {
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.stat-icon-box.blue {
+  background: #e8f0ff;
+  color: #2563eb;
+}
+
+.stat-icon-box.green {
+  background: #dcfce7;
+  color: #22c55e;
+}
+
+.stat-icon-box.purple {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.stat-icon-box.orange {
+  background: #ffedd5;
+  color: #f97316;
 }
 
 .stat-card__label {
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--orange-600);
-  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #64748b;
+  margin: 0 0 6px;
 }
 
 .stat-card__value {
-  font-size: 33px;
-  font-weight: 500;
-  color: var(--navy-900);
-  
+  font-size: 34px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1;
 }
 
 .form-section{
@@ -186,33 +339,128 @@ body{
 
 .flashcard-header {
   display: flex;
-  justify-content: start; 
+  
+  /* align-items: center; */
+  gap: 12px;
+  margin: 0 60px 20px; 
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+}
+
+.flashcard-header-top{
+  display: flex;
+  gap: 150px;
   align-items: center;
-  margin: 0 60px 20px;
+  justify-content:flex-start; 
+  margin-top: 50px;
 }
 
 .flashcard-header h2 {
+ white-space: nowrap;
   color: var(--navy-600);
-  font-size: 24px;
   font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+ 
 }
 
-.ResetBtn{
-  position: absolute;
-  right: 0; 
-  margin-right: 100px;
+.search-bar {
+  flex: 1;
+  max-width: 350px;
+  border-radius: 10px;
   
-  background-color: var(--orange-400);
+}
+
+.search-bar .ant-input {
+  background: var(--navy-300);
+  color: var(--navy-900);
+}
+
+.search-bar .ant-input-prefix {
+  color: var(--navy-400) !important;
+}
+
+.search-bar.ant-input-affix-wrapper {
+  border-color: var(--navy-100) !important;
+  border-radius: 8px !important;
+  background: var(--page-bg) !important;
+}
+
+.search-bar.ant-input-affix-wrapper:focus-within {
+  border-color: var(--navy-400) !important;
+  box-shadow: 0 0 0 3px rgba(55, 138, 221, 0.15) !important;
+}
+
+.deck-filter {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 0px;
+ 
+}
+
+.filter-btn {
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 0.5px solid var(--navy-100);
+  background: #fff;
+  color: var(--navy-600);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.filter-btn:hover {
+  background: var(--navy-50);
+}
+
+.filter-btn--active {
+  background: var(--navy-800);
+  color: #fff;
+  border-color: var(--navy-800);
+}
+
+
+.ResetBtn{
+  flex-shrink: 0;           /* ← stops reset button squishing */
+  background: var(--orange-400);
   color: #fff;
   border: none;
-  padding: 9px 16px;
-  border-radius: 999px;
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+  
 }
 
 .ResetBtn:hover{
   background-color: var(--orange-600);
+}
+
+.empty-state {
+  grid-column: 1 / -1;     /* ← spans full grid width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 4rem 0;
+  color: var(--navy-400);
+}
+
+.empty-state .ti-cards {
+  font-size: 48px;
+  opacity: 0.4;
+}
+
+.empty-state p {
+  font-size: 15px;
+  color: var(--navy-400);
 }
 
 .flashcard-grid{
@@ -231,13 +479,12 @@ body{
   transition: transform 0.2s ease;
 }
 .flashcard .deck-label{
-  display: inline-block;
+  border-radius: 999px;
+  border-color: var(--navy-100);
+  background: var(--navy-50);
+  color: var(--navy-600);
   font-size: 11px;
   font-weight: 500;
-  color: var(--navy-600);
-  background: var(--navy-100);
-  padding: 3px 10px;
-  border-radius: 999px;
   align-self: flex-start;
   margin-bottom: 4px;
 }

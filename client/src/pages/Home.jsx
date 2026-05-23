@@ -2,8 +2,16 @@ import { useState, useEffect } from 'react'
 import "../index.css";
 import { Link } from "react-router-dom";
 import { Button, Input, AutoComplete, Tag} from "antd";
-import { EditOutlined , DeleteOutlined, UserOutlined, ReloadOutlined} from "@ant-design/icons";
-import { Avatar, Space } from 'antd';
+import { EditOutlined , DeleteOutlined, UserOutlined, ReloadOutlined, SearchOutlined} from "@ant-design/icons";
+
+  import {
+  FaBookOpen,
+  FaLayerGroup,
+  FaCheckCircle,
+  FaRedoAlt
+} from "react-icons/fa";
+
+  import { Avatar, Space } from 'antd';
 import { FaBolt } from 'react-icons/fa';
 
 
@@ -18,7 +26,7 @@ function Home(){
       //input form
       const [question, setQuestion] = useState("");
       const [answer, setAnswer] = useState("");
-      const [deck, setDeck] = useState("");
+      const [deck, setDeck] = useState("General");
     
       //storing card being edited
       const [editId, setEditId]= useState(null);
@@ -28,6 +36,9 @@ function Home(){
       const [fadingCards, setFadingCards] = useState([]);
     
       const [user, setUser] = useState(null);
+
+      const [filterDeck, setFilterDeck] = useState("All");
+      const [searchQuery, setSearchQuery] = useState("");
     
 
       const deckOptions = [
@@ -228,7 +239,7 @@ function Home(){
         ) : (
     <>
     {user.role === "admin" && (
-    <Link to="/admin-history">Admin History</Link>
+    <Link to="/admin-history">Learning History</Link>
     )}
     <Space size="large">   
     <Avatar class="navbar-avatar" style={{ backgroundColor: '#EF9F27', color: '#fff'}} icon={<UserOutlined />} />
@@ -242,22 +253,34 @@ function Home(){
 {/* stats section */}
       <div className="stats-grid">
     <div className="stat-card">
+      <div className="stat-icon-box blue">
+        <FaBookOpen />
+      </div>
       <p className="stat-card__label">Total cards</p>
       <p className="stat-card__value">{flashcards.length}</p>
     </div>
     <div className="stat-card">
+      <div className="stat-icon-box green">
+        <FaLayerGroup />
+      </div>
       <p className="stat-card__label">Decks</p>
       <p className="stat-card__value">
         {new Set(flashcards.map(c => c.deck || "General")).size}
       </p>
     </div>
     <div className="stat-card">
+      <div className="stat-icon-box purple">
+        <FaCheckCircle />
+      </div>
       <p className="stat-card__label">Studied</p>
       <p className="stat-card__value">
         {hiddenCards.length}
       </p>
     </div>
     <div className="stat-card">
+      <div className="stat-icon-box orange">
+        <FaRedoAlt />
+      </div>
       <p className="stat-card__label">Remaining</p>
       <p className="stat-card__value">
         {flashcards.length - hiddenCards.length}
@@ -313,21 +336,76 @@ function Home(){
     <section className="flashcard-section">
 
       <div className="flashcard-header">
-      <h2>My Flashcards</h2>
+        <div className="flashcard-header-top">
+          <h2>My Flashcards</h2>
+       
+      <Input
+        className="search-bar"
+        placeholder="Search flashcards..."
+        prefix={<SearchOutlined />}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        allowClear
+      />
+
+      
       <Button className="ResetBtn" onClick={() => {
       setHiddenCards([]);
       setFlippedCards([]);
       setFadingCards([]);
       }}> Reset <ReloadOutlined />
       </Button>
+      
       </div>
-
+    
+      <div className="deck-filter">
+        {["All", ...new Set(flashcards.map(c => c.deck || "General"))].map(d => (
+        <Button
+          key={d}
+          className={`filter-btn ${filterDeck === d ? "filter-btn--active" : ""}`}
+          onClick={() => setFilterDeck(d)}
+          >
+          {d}
+        </Button>
+        
+      ))}
+      
+    </div>
+  </div>
 
       <div className="flashcard-grid">
+     
+      {(() => {
     
-      {flashcards
+      const filtered = flashcards
       .filter((card) => !hiddenCards.includes(card._id))
-      .map((card)=> (
+      .filter((card) => filterDeck === "All" || (card.deck || "General") === filterDeck)
+      .filter((card) => {
+        if (!searchQuery.trim()) return true;
+        const q = searchQuery.toLowerCase();
+        return (
+          card.question.toLowerCase().includes(q) ||
+          card.answer.toLowerCase().includes(q) ||
+          (card.deck || "General").toLowerCase().includes(q)
+        );
+      });
+      
+      
+    if (filtered.length === 0) {
+        return (
+          <div className="empty-state">
+            <i className="ti ti-cards" aria-hidden="true" />
+            <p>
+              {searchQuery.trim()
+                ? `No flashcards found for "${searchQuery}"`
+                : filterDeck !== "All"
+                ? `No flashcards in "${filterDeck}"`
+                : "No flashcards yet — create one above!"}
+            </p>
+          </div>
+        );
+      }
+      return filtered.map((card)=> (
         <div 
         className={`flashcard ${fadingCards.includes(card._id) ? "fade-out" : ""}`}
         key={card._id}
@@ -377,9 +455,9 @@ function Home(){
 
     </div>
   </div>
-))}
-  
-  </div>
+      ))
+})()}
+      </div>
   </section>
   
   <footer className="app-footer">
