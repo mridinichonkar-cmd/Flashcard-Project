@@ -729,3 +729,119 @@ body{
   background-color: var(--navy-600);
   
 }
+
+/* admin learning history page */
+
+.admin-page {
+  padding: 2rem 60px;
+  flex: 1;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.admin-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  margin: 0 0 4px;
+}
+
+.admin-header p {
+  font-size: 13px;
+  color: var(--navy-400);
+  margin: 0;
+}
+
+.admin-loading {
+  text-align: center;
+  color: var(--navy-400);
+  padding: 4rem 0;
+}
+
+.admin-table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 0.5px solid var(--navy-100);
+  box-shadow: 0 1px 4px rgba(4, 44, 83, 0.08);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 14px;
+}
+
+.admin-table thead {
+  background: var(--navy-800);
+}
+
+.admin-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+}
+
+.admin-table tbody tr {
+  border-bottom: 0.5px solid var(--navy-50);
+  transition: background 0.15s;
+}
+
+.admin-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+  background: var(--navy-50);
+}
+
+.admin-table td {
+  padding: 12px 16px;
+  color: var(--navy-900);
+  vertical-align: middle;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(224, 144, 25, 0.957);
+  color: #e7e1e1;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-deck-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--navy-600);
+  background: var(--navy-50);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 0.5px solid var(--navy-100);
+}

@@ -31,28 +31,9 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-const flashcardSchema = new mongoose.Schema({
-  question: {
-    type: String,
-    required: true,
-  },
-  answer: {
-    type: String,
-    required: true,
-  },
-  deck:{
-    type: String,
-    default: "General",
-  },
 
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true},
 
-}, { timestamps: true });
-
-const Flashcard = mongoose.model("Flashcard", flashcardSchema);
+const Flashcard = require("./models/Flashcard");
 
 app.get("/api/flashcards", authMiddleware, async(req, res) => {
     try {
