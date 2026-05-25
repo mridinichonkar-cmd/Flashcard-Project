@@ -36,6 +36,7 @@ function Home(){
       const [fadingCards, setFadingCards] = useState([]);
     
       const [user, setUser] = useState(null);
+      const [showLoginDialog, setShowLoginDialog] = useState(false);
 
       const [filterDeck, setFilterDeck] = useState("All");
       const [searchQuery, setSearchQuery] = useState("");
@@ -133,7 +134,11 @@ function Home(){
     //handles creating and update
     const handleFormSubmit = async (e) => {
       e.preventDefault();
-    
+      if (!user){
+        setShowLoginDialog(true);
+        return;
+      }
+
       if (!question.trim() || !answer.trim()) {
         alert("Please fill in both the question and answer fields.");
         return;
@@ -222,19 +227,41 @@ function Home(){
     
     
     return (
+      
 
     <div className = "app">
+      {showLoginDialog && (
+          <div className="dialog-overlay" onClick={() => setShowLoginDialog(false)}>
+            <div className="dialog-box" onClick={(e) => e.stopPropagation()}>
+              <div className="dialog-icon">
+                <FaBolt color="orange" size="1.5em" />
+                <i className="ti ti-lock" aria-hidden="true" />
+              </div>
+              <h3>Login / Register required</h3>
+              <p>You need to have an account to create flashcards.</p>
+              <div className="dialog-actions">
+                <button className="dialog-btn-secondary" onClick={() => setShowLoginDialog(false)}>
+                  Cancel
+                </button>
+                <Link to="/login" className="dialog-btn-primary">
+                  Go to login
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       <header className="app-header">
         <div className="logo">
         <FaBolt color="orange" size="2em" />
         <h1>Flash Learning</h1>
         </div>
-
+        <h2 className="header-message">Making studying Flashy! Exam prep has never been easier!</h2>
     <nav className="navbar">
+      
     {!user ? (
     <>
     <Link to="/login">Login</Link>
-    <Link to="/login">Register</Link>
+    
     </>
         ) : (
     <>
@@ -244,7 +271,7 @@ function Home(){
     <Space size="large">   
     <Avatar class="navbar-avatar" style={{ backgroundColor: '#EF9F27', color: '#fff'}} icon={<UserOutlined />} />
     </Space>
-    <Button type="primary" onClick={handleLogout}>Logout</Button>
+    <Button className="logout-btn" onClick={handleLogout}>Logout</Button>
     </>
     )}
 </nav>

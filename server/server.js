@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
 const historyRoutes = require("./routes/historyRoutes");
+const requireAdmin = require("./middleware/requireAdmin");
 
 dotenv.config();
 
@@ -47,9 +48,9 @@ const flashcardSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
-  },
-});
+    required: true},
+
+}, { timestamps: true });
 
 const Flashcard = mongoose.model("Flashcard", flashcardSchema);
 
@@ -63,6 +64,8 @@ app.get("/api/flashcards", authMiddleware, async(req, res) => {
     res.status(500).json({ error: "Failed to fetch flashcards" });
   }
 });
+
+
 
 app.post("/api/flashcards", authMiddleware, async(req, res) => {
   try{

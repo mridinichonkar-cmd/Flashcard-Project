@@ -19,4 +19,19 @@ router.get("/view_history", authMiddleware, requireAdmin, async (req, res) => {
   }
 });
 
+router.post("/log", authMiddleware, async (req, res) => {
+  try {
+    const { flashcardId, action } = req.body;
+    const entry = new LearningHistory({
+      userId: req.userId,
+      flashcardId,
+      action,
+    });
+    await entry.save();
+    res.status(201).json(entry);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to log history" });
+  }
+});
+
 module.exports = router;
