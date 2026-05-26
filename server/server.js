@@ -40,6 +40,7 @@ app.get("/api/flashcards", authMiddleware, async(req, res) => {
     const flashcards = await Flashcard.find({
       user:req.userId
     });
+    console.timeEnd("flashcards-query");
     res.json(flashcards);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch flashcards" });

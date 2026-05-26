@@ -10,9 +10,14 @@ function Login() {
   
     const [loginLoading, setLoginLoading] = useState(false);
     const [registerLoading, setRegisterLoading] = useState(false);
+    const [loginError, setLoginError] = useState(null);       // ← add
+    const [registerError, setRegisterError] = useState(null); // ← add
+    const [registerSuccess, setRegisterSuccess] = useState(false); // ← add
+
     
     const handleRegister = async ({username, email, password}) => {
       setRegisterLoading(true);
+      setRegisterError(null); // ← reset error
       try{
         const response = await fetch(
           "http://localhost:5000/api/auth/register",
@@ -32,14 +37,16 @@ function Login() {
         const data = await response.json();
     
         if (response.ok) {
-          // setUser(data.user);
-          alert("Registered successfully, you can now log in!");
+
+          setRegisterSuccess(true);
+          
           
         } else {
-          alert(data.message);
+          setRegisterError(data.message || "Registration failed"); // ← set error message
           }
         } catch(error){
             console.error(error);
+            setRegisterError("An error occurred during registration"); // ← set generic error
       } finally {
         setRegisterLoading(false);
       }
@@ -47,7 +54,7 @@ function Login() {
     
     const handleLogin = async ({email, password}) => {
       setLoginLoading(true);
-    
+      setLoginError(null); // ← reset error
       try{
         const response = await fetch("http://localhost:5000/api/auth/login", {
             method: "POST",
@@ -70,10 +77,11 @@ function Login() {
           window.location.href = "/";
 
         } else{
-            alert(data.message);
+            setLoginError(data.message || "Login failed"); // ← set error message
           }
       } catch(error){
         console.error(error);
+        setLoginError("An error occurred during login"); // ← set generic error
       } finally{
          setLoginLoading(false);
       }
@@ -119,6 +127,13 @@ function Login() {
             <Button htmlType="submit" loading={loginLoading} className="auth-btn" block>
               Log in
             </Button>
+            {loginError && (
+              <div className="auth-error">
+                <i className="ti ti-alert-triangle" aria-hidden="true" />
+                <p>{loginError}</p>
+              </div>
+            )}
+
           </Form>
         </div>
 
@@ -137,6 +152,20 @@ function Login() {
             <h2>Create an account</h2>
             <p>Start learning with flashcards</p>
           </div>
+
+
+          {registerError && (
+            <div className="auth-error">
+              <i className="ti ti-alert-triangle" aria-hidden="true" />
+              <p>{registerError}</p>
+            </div>
+          )}
+          {registerSuccess && (
+            <div className="auth-success">
+              <i className="ti ti-check" aria-hidden="true" />
+              <p>Account created successfully!</p>
+            </div>
+          )}
 
           <Form layout="vertical" onFinish={handleRegister} className="auth-form">
             <Form.Item label="Username" name="username"
@@ -163,6 +192,7 @@ function Login() {
             <Button htmlType="submit" loading={registerLoading} className="auth-btn" block>
               Create account
             </Button>
+            
           </Form>
         </div>
 

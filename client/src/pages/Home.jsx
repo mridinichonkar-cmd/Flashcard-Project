@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import "../index.css";
 import { Link } from "react-router-dom";
-import { Button, Input, AutoComplete, Tag} from "antd";
+import { Button, Input, AutoComplete, Tag, Alert} from "antd";
 import { EditOutlined , DeleteOutlined, UserOutlined, ReloadOutlined, SearchOutlined} from "@ant-design/icons";
 
   import {
@@ -26,7 +26,7 @@ function Home(){
       //input form
       const [question, setQuestion] = useState("");
       const [answer, setAnswer] = useState("");
-      const [deck, setDeck] = useState("General");
+      const [deck, setDeck] = useState("");
     
       //storing card being edited
       const [editId, setEditId]= useState(null);
@@ -41,6 +41,8 @@ function Home(){
       const [filterDeck, setFilterDeck] = useState("All");
       const [searchQuery, setSearchQuery] = useState("");
     
+      const [error, setError] = useState(null);
+      const [loading, setLoading] = useState(true);
 
       const deckOptions = [
         { value: "General" },
@@ -50,43 +52,35 @@ function Home(){
       ];
     
     useEffect(() => {
-        fetch("http://localhost:5000/api/auth/me", {
-        credentials: "include",
-        })
-        .then((res) => {
-        if (!res.ok) return null;
-            return res.json();
-        })
-        .then((data) => {
-        if (data?.user) {
-            setUser(data.user);
-        }
-        })
-        .catch((err) => console.error(err));
-    }, []);
+  Promise.all([
+    fetch("http://localhost:5000/api/auth/me", { credentials: "include" }),
+    fetch("http://localhost:5000/api/flashcards", { credentials: "include" })
+  ])
+    .then(async ([authRes, cardsRes]) => {
+      // handle auth
+      if (authRes.ok) {
+        const authData = await authRes.json();
+        if (authData?.user) setUser(authData.user);
+      }
 
-      //fetching flashcards after loading
-    useEffect(() => {
-      fetch("http://localhost:5000/api/flashcards", {
-        credentials: "include",
-      })
-        .then((response) => {
-          if (!response.ok) {
-            return [];
-          }
-    
-          return response.json();
-        })
-        .then((data) => {
-          setFlashcards(Array.isArray(data) ? data : []);
-        })
-        .catch((error) => {
-          console.error("Error fetching flashcards:", error);
-          setFlashcards([]);
-        });
-    }, []);
-       
-    
+      // handle flashcards
+      if (cardsRes.status === 401) {
+        setFlashcards([]);
+      } else if (cardsRes.ok) {
+        const cardsData = await cardsRes.json();
+        setFlashcards(Array.isArray(cardsData) ? cardsData : []);
+      } else {
+        throw new Error("Failed to fetch flashcards");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      setError(err.message);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+}, []);
     
     const handleLogout = async () => {
       try {
@@ -105,6 +99,7 @@ function Home(){
     
       } catch (error) {
         console.error(error);
+        setError("Logout failed, Please try again.");
       }
     };
     
@@ -147,7 +142,7 @@ function Home(){
       const newFlashcard = {
         question: question.trim(),
         answer: answer.trim(),
-        deck: deck.trim(),
+        deck: deck.trim() || "General",
       };
       //if editing then update card
       if(editId){
@@ -161,6 +156,7 @@ function Home(){
           credentials:"include",
           body: JSON.stringify(newFlashcard),
         });
+
     
           const savedUpdatedCard = await response.json();
           //replace updated card in state
@@ -172,6 +168,7 @@ function Home(){
     
       } catch (error) {
         console.error("Error updating flashcard:", error);
+        setError("Failed to update flashcard");
       }
         
       }else{ 
@@ -192,6 +189,7 @@ function Home(){
           setDeck("General");
         } catch (error) {
             console.error("Error creating flashcard:", error);
+            setError("Failed to create flashcard");
         }
       }
     
@@ -223,12 +221,46 @@ function Home(){
       setEditId(card._id);
     }
     
-    console.log(flashcards);
     
+    
+    if (loading) {
+  return (
+     <div className="app">
+      <header className="app-header">
+        <div className="logo">
+          <FaBolt color="orange" size="2em" />
+          <h1>Flash Learning</h1>
+        </div>
+      </header>
+      <div className="status-page">
+        <i className="ti ti-loader" aria-hidden="true" />
+        <p>Loading flashcards...</p>
+      </div>
+    </div>
+  );
+}
+
+if (error && flashcards.length === 0) {
+  return (
+    <div className="app">
+      <header className="app-header">
+        <div className="logo">
+          <FaBolt color="orange" size="2em" />
+          <h1>Flash Learning</h1>
+        </div>
+      </header>
+      <div className="status-page status-page--error">
+        <i className="ti ti-wifi-off" aria-hidden="true" />
+        <h3>Something went wrong</h3>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Try again</button>
+      </div>
+    </div>
+  );
+}
     
     return (
       
-
     <div className = "app">
       {showLoginDialog && (
           <div className="dialog-overlay" onClick={() => setShowLoginDialog(false)}>
@@ -314,6 +346,15 @@ function Home(){
       </p>
     </div>
   </div>
+  
+  {error && (
+  <div className="error-banner">
+    <i className="ti ti-alert-circle" aria-hidden="true" />
+    <p>{error}</p>
+    <button onClick={() => setError(null)}>✕</button>
+  </div>
+)}
+
   {/* //form section for card creation */}
     <section className="form-section">
       <h2>Create a Flashcard</h2>
@@ -421,6 +462,7 @@ function Home(){
     if (filtered.length === 0) {
         return (
           <div className="empty-state">
+            
             <i className="ti ti-cards" aria-hidden="true" />
             <p>
               {searchQuery.trim()

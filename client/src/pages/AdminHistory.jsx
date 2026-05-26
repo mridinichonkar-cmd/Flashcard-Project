@@ -14,31 +14,46 @@ function AdminHistory() {
     const [filterDeck, setFilterDeck] = useState("All");
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const [error, setError] = useState(null);   
 
     useEffect(() => {
     fetch("http://localhost:5000/api/auth/me", { credentials: "include" })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch user data");
+        return res.json();
+
+      })
       .then(data => {
         if (!data?.user || data.user.role !== "admin") {
           navigate("/");  // redirect non-admins
         } else {
           setUser(data.user);
         }
-      });
+      })
+      .catch(err => {
+          console.error(err);
+          navigate("/");
+        });
   }, []);
 
     useEffect(() => {
+      if (!user) return; 
     fetch("http://localhost:5000/api/history/view_history", { credentials: "include" })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch history data");
+        return res.json();
+      })
       .then(data => {
         setRecords(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch(error => {
         console.error(error);
+        setError(error.message);
         setLoading(false);
+        
       });
-  }, []);
+  }, [user]);
 
     const decks = ["All", ...new Set(records.map(r => r.deck || "General"))];
     const filtered = records
@@ -47,20 +62,61 @@ function AdminHistory() {
         if (!searchQuery.trim()) return true;
         const q = searchQuery.toLowerCase();
         return (
-            r.question.toLowerCase().includes(q) ||
-            r.answer.toLowerCase().includes(q) ||
+            r.question?.toLowerCase().includes(q) ||
+            r.answer?.toLowerCase().includes(q) ||
             r.user?.username?.toLowerCase().includes(q) ||
             r.user?.email?.toLowerCase().includes(q)
         );
     });
     
     const handleLogout = async () => {
+      try{
         await fetch("http://localhost:5000/api/auth/logout", {
         method: "POST",
         credentials: "include",
         });
         navigate("/login");
-  };
+  } catch (err) {
+      setError("Logout failed");
+  }
+    };
+
+    if (loading){
+      return (
+        <div className="app">
+          <header className="app-header">
+            <div className="logo">
+              <FaBolt color="orange" size="2em" />
+              <h1>Flash Learning</h1>
+            </div>
+          </header>
+          <div className="status-page">
+            <i className="ti ti-loader" aria-hidden="true" />
+            <p>Loading history...</p>
+          </div>
+        </div>
+      )
+    }
+
+    if (error && records.length === 0) {
+      return (
+        <div className="app">
+          <header className="app-header">
+            <div className="logo">
+              <FaBolt color="orange" size="2em" />
+              <h1>Flash Learning</h1>
+            </div>
+          </header>
+          <div className="status-page status-page--error">
+            <i className="ti ti-wifi-off" aria-hidden="true" />
+            <h3>Something went wrong</h3>
+            <p>{error}</p>
+            <button onClick={() => window.location.reload()}>Try again</button>
+          </div>
+        </div>
+      );
+    }
+
 
     return (
         <div className="app">
@@ -76,6 +132,14 @@ function AdminHistory() {
       </header>
 
       <div className="admin-page">
+
+
+        {error && (
+          <div className="admin-error">
+            <i className="ti ti-alert-triangle" aria-hidden="true" />
+            <p>{error}</p>
+          </div>
+        )}
 
         <div className="admin-header">
           <div>
@@ -105,9 +169,7 @@ function AdminHistory() {
           ))}
         </div>
 
-        {loading ? (
-          <p className="admin-loading">Loading...</p>
-        ) : filtered.length === 0 ? (
+        {filtered.length === 0 ? (
           <div className="empty-state">
             <i className="ti ti-cards" aria-hidden="true" />
             <p>No records found</p>
