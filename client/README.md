@@ -24,7 +24,12 @@ How to run the app.
  - git clone https://github.com/mridinichonkar-cmd/Flashcard-Project.git
  - cd Flashcard-Clean
 
-2. Set up the backend and frontend
+2. create an .env file in server, A .env file is required in the server/ folder. The values have been included separately in the submission notes.
+   MONGO_URI=your_mongodb_connection_string_here
+   JWT_SECRET=your_jwt_secret_here
+   PORT=5000 
+
+3. Set up the backend and frontend
 
 - cd server
 - npm install
@@ -32,7 +37,7 @@ How to run the app.
 - cd client
 - npm install
 
-3. run the backend and client side in two different terminals(bash) 
+4. run the backend and client side in two different terminals(bash) 
 
 - cd server
 - npm run dev
