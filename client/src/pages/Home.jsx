@@ -493,6 +493,7 @@ if (error && flashcards.length === 0) {
        
 
         <div className="button-container">
+        <h2 className="tap-to-flip">Tap to Flip</h2>
         
         <Button shape="circle" title= "Edit" className="editbtn" type="button"
           onClick={(e) => {

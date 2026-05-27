@@ -13,6 +13,7 @@ For the tech stack I've chosen to use React paired with Vite and CSS  for fronte
 
 
 4) Feature List: 
+- User stat cards, total cards, studied, amount of decks, remaining cards
 - Flashcard creation with question and answer input
 - Real-time display of flashcards from the database
 - Edit existing flashcards (update functionality)
@@ -36,12 +37,6 @@ This project is split into to two main folders
     Client - for frontend react application
     Server - for backend files and database connections
 
-In client there is the src in which contains the main source code and its styling
-- App.jsx
-- Main.jsx
-- Index.css
-
-In server the main files are backend dependencies and server.js which runs the express server and the API routes
 
 
 6) A summary of challenges overcome

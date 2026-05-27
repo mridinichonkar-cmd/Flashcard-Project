@@ -743,6 +743,14 @@ body{
   margin-top: auto;
 }
 
+.tap-to-flip {
+  font-size: 13px;
+  color: var(--navy-400);
+  margin-right: auto;
+  align-self:center;
+  
+}
+
 .deletebtn{
   background-color: var(--orange-400);
   color: white;
