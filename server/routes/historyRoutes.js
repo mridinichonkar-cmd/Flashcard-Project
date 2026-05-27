@@ -11,7 +11,9 @@ router.get("/view_history", authMiddleware, requireAdmin, async (req, res) => {
       .populate("user", "username email")
       .sort({ createdAt: -1 });
 
-    res.json(flashcards);
+    const activeFlashcards = flashcards.filter(card => card.user !== null);
+
+    res.json(activeFlashcards);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch learning history" });
   }
