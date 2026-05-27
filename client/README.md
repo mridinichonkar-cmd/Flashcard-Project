@@ -70,37 +70,8 @@ This project is split into to two main folders
         Pages - for the different app routes 
     Server - for backend files and database connections
 
-flashcard-clean/
-├── client/                        # React frontend
-│   ├── src/
-│   │   ├── pages/
-│   │   │   ├── AdminHistory.jsx
-│   │   │   ├── Home.jsx
-│   │   │   └── Login.jsx
-│   │   ├── App.jsx
-│   │   ├── index.css
-│   │   └── main.jsx
-│   ├── index.html
-│   ├── package.json
-│   ├── README.md
-│   └── vite.config.js
-├── server/                        # Node.js backend
-│   ├── middleware/
-│   │   ├── authMiddleware.js
-│   │   └── requireAdmin.js
-│   ├── models/
-│   │   ├── Flashcard.js
-│   │   ├── learningHistory.js
-│   │   └── User.js
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   └── historyRoutes.js
-│   ├── .env
-│   ├── package.json
-│   └── server.js
-├── .gitignore
-├── package-lock.json
-└── package.json
+<img width="769" height="1077" alt="image" src="https://github.com/user-attachments/assets/7c6fcb0d-9365-4482-982a-259639fe984c" />
+
 
 
 6) A summary of challenges overcome
