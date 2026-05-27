@@ -9,7 +9,8 @@ This webapp allows users to input questions and answers to their personal flashc
 
 For the tech stack I've chosen to use React paired with Vite and CSS  for frontend and Node.js and Express for backend API calls aswell as logic handling. The database is MongoDB and Mongoose for connection. Ive used Ant design and React icons for styling. JWT via HTTP-only cookies was used for authentication
 
-![alt text](image.png)
+
+<img width="759" height="1035" alt="image" src="https://github.com/user-attachments/assets/65b38595-85a7-46e2-bdb1-f2cd8b022de5" />
 
 
 Make sure you have these installed before running the app:
