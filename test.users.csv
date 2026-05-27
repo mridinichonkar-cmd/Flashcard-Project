@@ -1,0 +1,9 @@
+_id,role,username,email,password,__v
+6a0ed0e37f3450bdb4003d7e,user,user1,user1@gmail.com,$2b$10$kSZzhPbHa9I7EHX8v2a4Z.YWrB.sqVbikP9J7YrkAx//We3QORvsK,0
+6a0ed15f7f3450bdb4003d89,user,user2,user2@gmail.com,$2b$10$Fn.NtUBzPs8lPV/uZYeqPeAdV7Q0ZnVVO9q6/1rfY6TpliKw5eJdW,0
+6a0ed19d7f3450bdb4003d90,admin,admin,admin@gmail.com,$2b$10$mHDGWi/nBGQfBm6kRnsxaeF6eFL0Q6JOtKjsYt6uCMJTw67Zo2kGK,0
+6a115261573c73eb16a5f8ec,user,user4,user4@gmail.com,$2b$10$fE8N302NX6FhpUEnlmGx7uog9y6RHE3.T3ZqKO73INgCnDoKgyCRu,0
+6a1654c44fa2deba068d841d,user,user5,user5@gmail.com,$2b$10$aXmPfjJ2LZrvbnIMskifmOmFf34SX/AfgvvqhuRqc/g8TFkaAre/S,0
+6a165b4c4fa2deba068d8458,user,user7,user7@gmail.com,$2b$10$Jzb9dy4/oViCR.Xi7V1bsOzQJ9QyfJ4//QeoqoUW5dYPnKC3DdFqS,0
+6a165d704fa2deba068d847a,user,testuser,testuser@gmail.com,$2b$10$vfGGeaq6OHO0C2NgbXUNXuMbTXAOW1HCAB0H3m8ftjBIHxl8waqm6,0
+6a1661998a91953e28fa4502,user,testuser2,testuser2@gmail.com,$2b$10$Yd6BCbAIe4Dv3E7SpMzmzeix66.ykXyou1fWjH.Fi4V.qb2AgMA7K,0
