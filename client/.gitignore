@@ -1,7 +1,8 @@
+
 server/.env
 .env
+**/.env
 node_modules/
-.vscode/
 
 # Logs
 logs
